@@ -156,7 +156,7 @@ function setLang(lang) {
 
 
 // ── State ────────────────────────────────────────────────
-const SHEET_URL_DEFAULT = 'https://script.google.com/a/macros/grabtaxi.com/s/AKfycbxS2wD5bXTDWqap43v3qCramDCTz9_fAidcEQRtwSy7ZEt2MViz-oQrivfwyQeZUfBeig/exec';
+const SHEET_URL_DEFAULT = 'https://script.google.com/a/macros/grabtaxi.com/s/AKfycbxHXuiY3Qs8QLxCOQWEXhdsHozvZ7a0NA01UjaU-ldUIIuVvGUg68aQSzw8bxwC-v4uUA/exec';
 let SCRIPT_URL = localStorage.getItem('grab_sheet_url') || SHEET_URL_DEFAULT;
 let selService = '';
 let selSlot    = null; // { dateLabel, session, time, key }
