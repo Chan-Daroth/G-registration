@@ -366,6 +366,30 @@ const DAYS_EN   = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
 let adminMode = false;
 let tapCount = 0, tapTimer;
 
+// ── Auto-reload (kiosk mode) ──────────────────────────────
+const IDLE_TIMEOUT = 5 * 60 * 1000; // 5 minutes no interaction
+const AWAY_TIMEOUT = 60 * 1000;     // 1 minute away from page
+let idleTimer, hiddenAt;
+
+function resetIdle() {
+  if (adminMode) return;
+  clearTimeout(idleTimer);
+  idleTimer = setTimeout(() => location.reload(), IDLE_TIMEOUT);
+}
+['touchstart','click','keydown','scroll'].forEach(ev =>
+  document.addEventListener(ev, resetIdle, { passive: true })
+);
+
+document.addEventListener('visibilitychange', () => {
+  if (adminMode) return;
+  if (document.visibilityState === 'hidden') {
+    hiddenAt = Date.now();
+  } else if (document.visibilityState === 'visible' && hiddenAt) {
+    if (Date.now() - hiddenAt > AWAY_TIMEOUT) location.reload();
+    hiddenAt = null;
+  }
+});
+
 // ── Boot ─────────────────────────────────────────────────
 (function init() {
   document.getElementById('setup-section').style.display = 'none';
@@ -378,6 +402,7 @@ let tapCount = 0, tapTimer;
   renderSlotPicker();
   fetchScheduleCounts();
   checkPreviousSubmission();
+  resetIdle();
 })();
 
 const ADMIN_PASS = 'dax2024';
